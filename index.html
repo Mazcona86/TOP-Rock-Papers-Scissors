@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        function computerPlay() {
+            let randomNumber = Math.random();
+            let computerChoice = (randomNumber >= 0.67) ? "scissors" :
+                               (randomNumber < 0.67 && randomNumber >= 0.34) ? "paper" : "rock";  
+            return computerChoice;
+        }
+        
+        function playRound(playerSelection, computerSelection) {
+            
+
+            if (playerSelection === "rock" && computerSelection === "scissors"){
+                return "You win! rock beats paper!";
+            } else if (playerSelection === "paper" && computerSelection === "rock") {
+                return "You win! paper beats rock!";
+            } else if (playerSelection === "scissors" && computerSelection === "paper") {
+                return "You win! scissors beats paper!";
+            } else if (playerSelection === computerSelection) {
+                return "Its a tie!";
+            } else {
+                return (`You Lose! ${computerSelection} beats ${playerSelection}`);
+            }
+        }
+
+        function game(){
+            let computerCount = 0;
+            let playerCount = 0;
+            for (let i = 1; i < 6; i++) {
+                let playerSelection = prompt("Rock, paper o scissors?").toLowerCase();
+                let computerSelection = computerPlay();
+                if (playRound(playerSelection, computerSelection) === `You Lose! ${computerSelection} beats ${playerSelection}`) {
+                    computerCount++;
+                    console.log (`Round ${i}: ${playRound(playerSelection, computerSelection)}`);   
+                } else if (playRound(playerSelection, computerSelection) === "Its a tie!") {
+                    console.log (`Round ${i}: No points for anyone!`);
+                } else {
+                    playerCount++;
+                    console.log (`Round ${i}: ${playRound(playerSelection, computerSelection)}`);
+                }
+            }
+            let finalResult = (computerCount > playerCount) ? "You lose! The machines took over the world!" : "You win! You have prevented the end of the world!"; 
+            return finalResult;
+        }
+
+        console.log (game());
+
+        
+        
+
+
+
+    </script>
+</body>
+</html>
