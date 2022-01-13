@@ -1,64 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
+    <button class="btn" id="Rock">Rock</button>
+    <button class="btn" id="Paper">Paper</button>
+    <button class="btn" id="Scissors">Scissors</button>
+    <div id="result"></div>
+
     <script>
+      let playerScore = 0;
+      let computerScore = 0;
+      let result = "";
 
-        function computerPlay() {
-            let randomNumber = Math.random();
-            let computerChoice = (randomNumber >= 0.67) ? "scissors" :
-                               (randomNumber < 0.67 && randomNumber >= 0.34) ? "paper" : "rock";  
-            return computerChoice;
+      const buttons = document.querySelectorAll(".btn");
+      buttons.forEach((button) => {
+        button.addEventListener("click", function () {
+          let buttonPressed = button.textContent;
+          playRound(buttonPressed);
+        });
+      });
+
+      // To disable buttons when the game ends
+      function disableButton() {
+        document.querySelector("#Rock").disabled = true;
+        document.querySelector("#Paper").disabled = true;
+        document.querySelector("#Scissors").disabled = true;
+      }
+
+      // The computer tool of choice
+      function computerPlay() {
+        let randomNumber = Math.random();
+        let computerChoice =
+          randomNumber >= 0.67
+            ? "Scissors"
+            : randomNumber < 0.67 && randomNumber >= 0.34
+            ? "Paper"
+            : "Rock";
+        return computerChoice;
+      }
+
+      // Playing a round of the game and selecting the winner
+      function playRound(playerSelection) {
+        let computerSelection = computerPlay();
+        let result = "";
+
+        if (playerSelection === "Rock" && computerSelection === "Scissors") {
+          result = "You win! Rock beats Scissors!";
+          playerScore += 1;
+        } else if (
+          playerSelection === "Paper" &&
+          computerSelection === "Rock"
+        ) {
+          result = "You win! Paper beats Rock!";
+          playerScore += 1;
+        } else if (
+          playerSelection === "Scissors" &&
+          computerSelection === "Paper"
+        ) {
+          result = "You win! Scissors beats Paper!";
+          playerScore += 1;
+        } else if (playerSelection === computerSelection) {
+          result = "Its a tie!";
+        } else {
+          result = `You Lose! ${computerSelection} beats ${playerSelection}`;
+          computerScore += 1;
         }
-        
-        function playRound(playerSelection, computerSelection) {
-            
 
-            if (playerSelection === "rock" && computerSelection === "scissors"){
-                return "You win! rock beats paper!";
-            } else if (playerSelection === "paper" && computerSelection === "rock") {
-                return "You win! paper beats rock!";
-            } else if (playerSelection === "scissors" && computerSelection === "paper") {
-                return "You win! scissors beats paper!";
-            } else if (playerSelection === computerSelection) {
-                return "Its a tie!";
-            } else {
-                return (`You Lose! ${computerSelection} beats ${playerSelection}`);
-            }
+        if (playerScore === 5) {
+          result = "Game finished! The player wins!";
+          playerScore = "Reload the page!";
+          computerScore = "Reload the page!";
+          disableButton();
+        } else if (computerScore === 5) {
+          result = "Game finished! The computers wins!";
+          playerScore = "Reload the page!";
+          computerScore = "Reload the page!";
+          disableButton();
         }
 
-        function game(){
-            let computerCount = 0;
-            let playerCount = 0;
-            for (let i = 1; i < 6; i++) {
-                let playerSelection = prompt("Rock, paper o scissors?").toLowerCase();
-                let computerSelection = computerPlay();
-                if (playRound(playerSelection, computerSelection) === `You Lose! ${computerSelection} beats ${playerSelection}`) {
-                    computerCount++;
-                    console.log (`Round ${i}: ${playRound(playerSelection, computerSelection)}`);   
-                } else if (playRound(playerSelection, computerSelection) === "Its a tie!") {
-                    console.log (`Round ${i}: No points for anyone!`);
-                } else {
-                    playerCount++;
-                    console.log (`Round ${i}: ${playRound(playerSelection, computerSelection)}`);
-                }
-            }
-            let finalResult = (computerCount > playerCount) ? "You lose! The machines took over the world!" : "You win! You have prevented the end of the world!"; 
-            return finalResult;
-        }
+        document.querySelector("#result").textContent = result;
+        addedDOMDivs();
+        return;
+      }
 
-        console.log (game());
+      // Added divs via JavaScript to show the score
+      function addedDOMDivs() {
+        const container = document.querySelector("#result");
 
-        
-        
+        const div = document.createElement("div");
+        div.style.backgroundColor = "rose";
+        container.appendChild(div);
 
+        const p = document.createElement("div");
+        p.textContent = "Player score:" + " " + playerScore;
+        p.style.backgroundColor = "skyblue";
+        div.appendChild(p);
 
-
+        const p1 = document.createElement("div");
+        p1.textContent = "Computer score:" + " " + computerScore;
+        p1.style.backgroundColor = "green";
+        div.appendChild(p1);
+      }
     </script>
-</body>
+  </body>
 </html>
